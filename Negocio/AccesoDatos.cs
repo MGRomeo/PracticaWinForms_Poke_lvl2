@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Dominio;
 
 namespace Negocio
 {
@@ -34,6 +35,23 @@ namespace Negocio
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
         }
+        public int IdMax()
+        {
+            int max;
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                max = Convert.ToInt32(comando.ExecuteScalar()) +1 ;
+                return max;
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public void EjecutarLectura()
         {
@@ -49,6 +67,23 @@ namespace Negocio
                 throw;
             }
         }
+
+        public void Subir()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                comando.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
 
         public void CerrarConexion()
         {

@@ -33,6 +33,7 @@ namespace Winform_app
             this.pbxPokemon = new System.Windows.Forms.PictureBox();
             this.btnPokemon = new System.Windows.Forms.Button();
             this.btnElemento = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxPokemon)).BeginInit();
             this.SuspendLayout();
@@ -57,7 +58,7 @@ namespace Winform_app
             // 
             // btnPokemon
             // 
-            this.btnPokemon.Location = new System.Drawing.Point(116, 304);
+            this.btnPokemon.Location = new System.Drawing.Point(123, 268);
             this.btnPokemon.Name = "btnPokemon";
             this.btnPokemon.Size = new System.Drawing.Size(75, 23);
             this.btnPokemon.TabIndex = 2;
@@ -67,7 +68,7 @@ namespace Winform_app
             // 
             // btnElemento
             // 
-            this.btnElemento.Location = new System.Drawing.Point(328, 304);
+            this.btnElemento.Location = new System.Drawing.Point(335, 268);
             this.btnElemento.Name = "btnElemento";
             this.btnElemento.Size = new System.Drawing.Size(75, 23);
             this.btnElemento.TabIndex = 3;
@@ -75,11 +76,22 @@ namespace Winform_app
             this.btnElemento.UseVisualStyleBackColor = true;
             this.btnElemento.Click += new System.EventHandler(this.btnElemento_Click);
             // 
+            // btnAgregar
+            // 
+            this.btnAgregar.Location = new System.Drawing.Point(228, 347);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(75, 23);
+            this.btnAgregar.TabIndex = 4;
+            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(853, 412);
+            this.Controls.Add(this.btnAgregar);
             this.Controls.Add(this.btnElemento);
             this.Controls.Add(this.btnPokemon);
             this.Controls.Add(this.pbxPokemon);
@@ -99,6 +111,7 @@ namespace Winform_app
         private System.Windows.Forms.PictureBox pbxPokemon;
         private System.Windows.Forms.Button btnPokemon;
         private System.Windows.Forms.Button btnElemento;
+        private System.Windows.Forms.Button btnAgregar;
     }
 }
 

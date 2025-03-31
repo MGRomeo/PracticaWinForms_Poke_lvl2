@@ -51,7 +51,6 @@ namespace Winform_app
             dgvGeneral.Columns["UrlImagen"].Visible = false;
             CargarImagen(listaPokemon[0].UrlImagen);
             pbxPokemon.Visible = true;
-
         }
 
         private void btnElemento_Click(object sender, EventArgs e)
@@ -62,6 +61,12 @@ namespace Winform_app
             listaElemento = negocio.listar();
             dgvGeneral.DataSource = listaElemento;
             dgvGeneral.Columns["Descripcion"].Visible = true;
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            FrmIngreso frmIngreso = new FrmIngreso();
+            frmIngreso.ShowDialog();
         }
     }
 }

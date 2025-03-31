@@ -53,6 +53,42 @@ namespace Negocio
             }
         }
 
+        #region Métodos
 
+        public void Insert(Pokemon poke, int max)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SeteatConsulta("insert into Pokemons (Id, Nombre, Numero, Bio, Altura, Peso, ImagenUrl, IdEvolucion ) values('"+ max +"','" + poke.Nombre + " ','" + poke.Numero + "','" + poke.Descripcion + "','','','','')");
+                datos.Subir();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public int IdMax()
+        {
+            int max;
+            AccesoDatos dato = new AccesoDatos();
+            try
+            {
+                dato.SeteatConsulta("select max(id) Id from Pokemons");
+                max = dato.IdMax();
+                return max;
+            }
+            catch (Exception)
+            {
+
+                throw ;
+            }
+            finally { dato.CerrarConexion(); }
+        }
+
+        #endregion
     }
 }
