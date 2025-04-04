@@ -39,5 +39,21 @@ namespace Negocio
                 datos.CerrarConexion();
             }
         }
+
+        public int BuscarId(Elemento elemento)
+        {
+            List<Elemento> lista = new List<Elemento>();
+            int Id = -1;
+            lista = listar();
+            foreach (var item in lista)
+            {
+                if (item.Descripcion == elemento.Descripcion)
+                {
+                    Id = item.Id;
+                    break;
+                }
+            }
+            return Id;
+        }
     }
 }

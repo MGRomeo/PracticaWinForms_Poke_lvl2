@@ -15,21 +15,60 @@ namespace Winform_app
     public partial class Form1 : Form
     {
         private List<Pokemon> listaPokemon;
-        private List<Elemento> listaElemento;
+
         public Form1()
         {
             InitializeComponent();
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ListarPokemon();
+
+        }
 
         private void dgvPokemon_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvGeneral.CurrentRow.DataBoundItem  is Pokemon)
-            {
-            Pokemon seleccionado = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
-                CargarImagen(seleccionado.UrlImagen);
-
-            }    
+            ListarElemento();
         }
+
+        private void ListarPokemon()
+        {
+            PokemonNegocio negocio = new PokemonNegocio();
+            try
+            {
+                listaPokemon = negocio.Listar();
+                dgvGeneral.DataSource = listaPokemon;
+                dgvGeneral.Columns["Id"].Visible = false;
+                dgvGeneral.Columns["Descripcion"].Visible = false;
+                dgvGeneral.Columns["UrlImagen"].Visible = false;
+                dgvGeneral.Columns["Tipo"].Visible = false;
+                dgvGeneral.Columns["Debilidad"].Visible = false;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void ListarElemento()
+        {
+
+            Pokemon seleccionado = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
+            List<Pokemon> poke = new List<Pokemon>();
+            PokemonNegocio negocio = new PokemonNegocio();
+            poke = negocio.ListarTipoDebilidad(seleccionado.Numero);
+            CargarImagen(seleccionado.UrlImagen);
+            pbxPokemon.Visible = true;
+            dgvElemento.DataSource = poke;
+            txtDescipcion.Text = seleccionado.Descripcion;
+            dgvElemento.Columns["Id"].Visible = false;
+            dgvElemento.Columns["Numero"].Visible = false;
+            dgvElemento.Columns["Nombre"].Visible = false;
+            dgvElemento.Columns["Descripcion"].Visible = false;
+            dgvElemento.Columns["UrlImagen"].Visible = false;
+        }
+
         private void CargarImagen ( string imagen)
         {
             try
@@ -42,31 +81,48 @@ namespace Winform_app
             }
         }
 
-        private void btnPokemon_Click(object sender, EventArgs e)
-        {
-            PokemonNegocio negocio = new PokemonNegocio();
-            listaPokemon = negocio.Listar();
-            dgvGeneral.DataSource = listaPokemon;
-            dgvGeneral.Columns["Descripcion"].Visible = false;
-            dgvGeneral.Columns["UrlImagen"].Visible = false;
-            CargarImagen(listaPokemon[0].UrlImagen);
-            pbxPokemon.Visible = true;
-        }
-
-        private void btnElemento_Click(object sender, EventArgs e)
-        {
-           
-            pbxPokemon.Visible = false;
-            ElementoNegocio negocio = new ElementoNegocio();
-            listaElemento = negocio.listar();
-            dgvGeneral.DataSource = listaElemento;
-            dgvGeneral.Columns["Descripcion"].Visible = true;
-        }
-
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             FrmIngreso frmIngreso = new FrmIngreso();
             frmIngreso.ShowDialog();
+            ListarPokemon();
+            ListarElemento();
         }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if(dgvGeneral.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un Pokemon primero");
+            }
+            else
+            {
+                Pokemon pokemon = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
+                FrmIngreso frmIngreso = new FrmIngreso(pokemon);
+                frmIngreso.ShowDialog();
+            }
+            
+        }
+
+        private void btnModifTipoDebilidad_Click(object sender, EventArgs e)
+        {
+            if (dgvElemento.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un Tipo primero");
+            }
+            else if (dgvGeneral.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un Pokemon primero");
+            }
+            else
+            {
+                Pokemon pokemon = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
+                Pokemon tipo = (Pokemon)dgvElemento.CurrentRow.DataBoundItem;
+                FrmIngreso frmIngreso = new FrmIngreso(pokemon,tipo,1);
+                frmIngreso.ShowDialog();
+                
+            }
+        }
+
     }
 }

@@ -29,12 +29,16 @@ namespace Negocio
             conexion = new SqlConnection("server =.\\SQLEXPRESS;database=MundoPokemon_DB;integrated security = true");
             comando = new SqlCommand();
         }
-        
+
+        #region Métodos
+
         public void SeteatConsulta(string consulta)
         {
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
         }
+
+        //Obtengo el maximo Id desde DB
         public int IdMax()
         {
             int max;
@@ -42,6 +46,7 @@ namespace Negocio
             try
             {
                 conexion.Open();
+                //Esto me trae solamente un Numero
                 max = Convert.ToInt32(comando.ExecuteScalar()) +1 ;
                 return max;
             }
@@ -51,6 +56,13 @@ namespace Negocio
 
                 throw;
             }
+        }
+
+        //Este comando agrega al comando el nombre de un parametro, ej. @Id tipo,
+        // y le inserta un valor
+        public void SetearParametros(string nombreParametro, object valor)
+        {
+            comando.Parameters.AddWithValue(nombreParametro, valor);
         }
 
         public void EjecutarLectura()
@@ -84,12 +96,12 @@ namespace Negocio
 
         }
 
-
         public void CerrarConexion()
         {
             if (lector != null) lector.Close();
             conexion.Close();
         }
-    
+        #endregion
+
     }
 }
