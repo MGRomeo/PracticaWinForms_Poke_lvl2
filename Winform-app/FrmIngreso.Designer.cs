@@ -35,7 +35,6 @@ namespace Winform_app
             this.txtNumero = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtDescipcion = new System.Windows.Forms.TextBox();
-            this.LvlTitulo = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.lblTipo = new System.Windows.Forms.Label();
@@ -95,15 +94,6 @@ namespace Winform_app
             this.txtDescipcion.Name = "txtDescipcion";
             this.txtDescipcion.Size = new System.Drawing.Size(100, 20);
             this.txtDescipcion.TabIndex = 2;
-            // 
-            // LvlTitulo
-            // 
-            this.LvlTitulo.AutoSize = true;
-            this.LvlTitulo.Location = new System.Drawing.Point(75, 23);
-            this.LvlTitulo.Name = "LvlTitulo";
-            this.LvlTitulo.Size = new System.Drawing.Size(90, 13);
-            this.LvlTitulo.TabIndex = 6;
-            this.LvlTitulo.Text = "Ingreso Pokemon";
             // 
             // btnAceptar
             // 
@@ -201,7 +191,6 @@ namespace Winform_app
             this.Controls.Add(this.lblTipo);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
-            this.Controls.Add(this.LvlTitulo);
             this.Controls.Add(this.txtDescipcion);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.txtNumero);
@@ -210,7 +199,7 @@ namespace Winform_app
             this.Controls.Add(this.lblNumero);
             this.Name = "FrmIngreso";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmIngreso";
+            this.Text = "Alta Pokemon";
             this.Load += new System.EventHandler(this.FrmIngreso_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbxPokemon)).EndInit();
             this.ResumeLayout(false);
@@ -226,7 +215,6 @@ namespace Winform_app
         private System.Windows.Forms.TextBox txtNumero;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtDescipcion;
-        private System.Windows.Forms.Label LvlTitulo;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label lblTipo;

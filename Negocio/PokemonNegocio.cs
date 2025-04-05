@@ -47,13 +47,13 @@ namespace Negocio
         }
 
         // Solo me trae los tipos y debilidades
-        public List<Pokemon> ListarTipoDebilidad(int id)
+        public List<Pokemon> ListarTipoDebilidad(int numero)
         {
             AccesoDatos datos = new AccesoDatos();
             List<Pokemon> lista = new List<Pokemon>();
             try
             {
-                datos.SeteatConsulta($"select e.Descripcion Tipo, d.Descripcion Debilidad from Pokemons p inner join[Pokemons.Tipos] pk on p.Id = pk.IdPokemon inner join Elementos e on pk.IdElemento = e.Id inner join[Pokemons.Debilidades] pd on p.Id = pd.IdPokemon inner join Elementos d on pd.IdElemento = d.Id where p.Id = {id} order by e.Descripcion");
+                datos.SeteatConsulta($"select e.Descripcion Tipo, d.Descripcion Debilidad from Pokemons p inner join[Pokemons.Tipos] pk on p.Id = pk.IdPokemon inner join Elementos e on pk.IdElemento = e.Id inner join[Pokemons.Debilidades] pd on p.Id = pd.IdPokemon inner join Elementos d on pd.IdElemento = d.Id where p.Numero = {numero} order by e.Descripcion");
                 datos.EjecutarLectura();
 
 
@@ -96,6 +96,36 @@ namespace Negocio
                 throw;
             }
             finally { datos.CerrarConexion(); }
+        }
+
+        public void UpdatePokemon(int numero, string nombre, string bio, string url, int idPokemon)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SeteatConsulta($"update Pokemons set Numero= {numero} ,Nombre= '{nombre}', Bio='{bio}', ImagenUrl='{url}' where id= {idPokemon}");
+                datos.Subir();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void UpdateElemento(int numero, string nombre,string bio, string url, int idPokemon, int idTipoViejo,int idTipoNuevo, int idDebViejo, int idDebNuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SeteatConsulta($"update Pokemons set Numero= {numero} ,Nombre= '{nombre}', Bio='{bio}', ImagenUrl='{url}' where id= {idPokemon} update [Pokemons.Tipos] set IdElemento = {idTipoNuevo} where IdPokemon = {idPokemon} and IdElemento = {idTipoViejo} update [Pokemons.Debilidades] set IdElemento = {idDebNuevo} where IdPokemon = {idPokemon} and IdElemento = {idDebViejo}");
+                datos.Subir();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public int IdMax()

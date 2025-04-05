@@ -43,7 +43,7 @@ namespace Negocio
         public int BuscarId(Elemento elemento)
         {
             List<Elemento> lista = new List<Elemento>();
-            int Id = -1;
+            int Id = -1; // valor aleatorio para que no chille
             lista = listar();
             foreach (var item in lista)
             {

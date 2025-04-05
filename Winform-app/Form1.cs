@@ -28,7 +28,11 @@ namespace Winform_app
 
         private void dgvPokemon_SelectionChanged(object sender, EventArgs e)
         {
-            ListarElemento();
+            if (dgvGeneral.CurrentRow != null)
+            {
+                ListarElemento();
+
+            }
         }
 
         private void ListarPokemon()
@@ -120,6 +124,7 @@ namespace Winform_app
                 Pokemon tipo = (Pokemon)dgvElemento.CurrentRow.DataBoundItem;
                 FrmIngreso frmIngreso = new FrmIngreso(pokemon,tipo,1);
                 frmIngreso.ShowDialog();
+                ListarElemento();
                 
             }
         }

@@ -15,33 +15,38 @@ namespace Winform_app
     public partial class FrmIngreso : Form
     {
         // Declaro el atributo pokemon = null para cuando cargue la ventana
-        //  pueda diferenciar si es una alta o una modificacion
+        //  pueda diferenciar si es un alta o una modificacion
         private Pokemon pokemon = null;
         private Pokemon tipo = null;
-        private int bandera;
+        private int bandera; // para saber si modifico un pokemon o Tipo/debilidad
         public FrmIngreso()
         {
             InitializeComponent();
         }
 
-        // Constructor para modificacion
+        // Constructores para modificacion
 
+        //Pokemon
         public FrmIngreso(Pokemon pokemon)
         {
             InitializeComponent();
+            Text = "Modificar Pokemon";
             this.pokemon = pokemon;
-        }
+        } 
+
+        //Tipo y debilidad
         public FrmIngreso(Pokemon pokemon, Pokemon tipo, int bandera)
         {
             InitializeComponent();
             this.pokemon = pokemon;
             this.tipo = tipo;
             this.bandera = bandera;
+            Text = "Modificar Tipo/Habilidad";
         }
 
+        #region Metodos
 
-
-        private void FrmIngreso_Load(object sender, EventArgs e)
+        private void FrmIngreso_Load(object sender, EventArgs e)  // seleccion de formulario vacio o precargado
         {
 
             ElementoNegocio elemento = new ElementoNegocio();
@@ -57,12 +62,13 @@ namespace Winform_app
                 cbxDebilidad.DataSource = elemento.listar();
                 cbxDebilidad.ValueMember = "Id";
                 cbxDebilidad.DisplayMember = "Descripcion";
+                // lo de arriba no lo uso pq es diferente la db y como muestro los dgv tambien
 
-                if (pokemon != null)
+                if (pokemon != null) // viene un pokemon para modificar, sino formulario vacio
                 {
                     switch (bandera)
                     {
-                        case 1:
+                        case 1: // cargo para modificar tipo/Debilidad
                             {
                                 cbxTipo.Text = tipo.Tipo.ToString();
                                 cbxDebilidad.Text = tipo.Debilidad.ToString();
@@ -77,7 +83,7 @@ namespace Winform_app
                                 CargarImagen(pokemon.UrlImagen);
                                 break;
                             }
-                        default:
+                        default: // cargo para modificar Pokemon
                             txtNumero.Text = pokemon.Numero.ToString();
                             txtNombre.Text = pokemon.Nombre;
                             txtDescipcion.Text = pokemon.Descripcion;
@@ -95,23 +101,51 @@ namespace Winform_app
             }
         }
 
-        // FIXME: este metodo al cargar el id y el numero pueden no coincidir y no matchea los elementos luego
-
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             try
             {
-                Pokemon poke = new Pokemon();
-                PokemonNegocio negocio = new PokemonNegocio();
-                poke.Numero = int.Parse(txtNumero.Text);
-                poke.Nombre = txtNombre.Text;
-                poke.Descripcion = txtDescipcion.Text;
-                poke.UrlImagen = txtUrlImagen.Text;
-                poke.Tipo = (Elemento)cbxTipo.SelectedItem;
-                poke.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
-                negocio.Insert(poke, negocio.IdMax());
-                MessageBox.Show("Pokemon agregado exitosamente");
-                Close();
+                if (pokemon == null) //si pokemon es null es un Pokemon nuevo a cargar
+                {
+                    pokemon = new Pokemon();
+                    PokemonNegocio negocio = new PokemonNegocio();
+                    pokemon.Numero = int.Parse(txtNumero.Text);
+                    pokemon.Nombre = txtNombre.Text;
+                    pokemon.Descripcion = txtDescipcion.Text;
+                    pokemon.UrlImagen = txtUrlImagen.Text;
+                    pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
+                    pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
+                    negocio.Insert(pokemon, negocio.IdMax());
+                    MessageBox.Show("Pokemon agregado exitosamente");
+
+                }
+                else // no es null, existe pokemon cargado
+                {
+                    PokemonNegocio negocio = new PokemonNegocio();
+                    if (tipo == null) // si tipo es null quiere decir que estoy trabajando con un Pokemon
+
+                    {
+                        pokemon.Numero = int.Parse(txtNumero.Text);
+                        pokemon.Nombre = txtNombre.Text;
+                        pokemon.Descripcion = txtDescipcion.Text;
+                        pokemon.UrlImagen = txtUrlImagen.Text;
+                        negocio.UpdatePokemon(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen,pokemon.Id);
+                    }
+                    else // si no es null estoy trabajando con elementos guardados en un objeto pokemon
+                    {
+                        ElementoNegocio elemento = new ElementoNegocio();
+                        pokemon.Numero = int.Parse(txtNumero.Text);
+                        pokemon.Nombre = txtNombre.Text;
+                        pokemon.Descripcion = txtDescipcion.Text;
+                        pokemon.UrlImagen = txtUrlImagen.Text;
+                        pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
+                        pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
+                        negocio.UpdateElemento(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen, pokemon.Id, elemento.BuscarId(tipo.Tipo), elemento.BuscarId(pokemon.Tipo), elemento.BuscarId(tipo.Debilidad), elemento.BuscarId(pokemon.Debilidad));
+                        MessageBox.Show("Modificación exitosa");
+                    }
+                    
+                    Close();
+                }
             }
             catch (Exception )
             {
@@ -142,5 +176,7 @@ namespace Winform_app
         {
             Close();
         }
+
+        #endregion
     }
 }
