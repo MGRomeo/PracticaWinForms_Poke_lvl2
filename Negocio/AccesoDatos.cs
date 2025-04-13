@@ -32,7 +32,7 @@ namespace Negocio
 
         #region Métodos
 
-        public void SeteatConsulta(string consulta)
+        public void SetearConsulta(string consulta)
         {
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
@@ -80,7 +80,7 @@ namespace Negocio
             }
         }
 
-        public void Subir()
+        public void EjecutarAccion()
         {
             comando.Connection = conexion;
             try

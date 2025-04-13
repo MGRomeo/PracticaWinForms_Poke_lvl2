@@ -23,7 +23,7 @@ namespace Winform_app
         private void Form1_Load(object sender, EventArgs e)
         {
             ListarPokemon();
-
+            FiltroDB();
         }
 
         private void dgvPokemon_SelectionChanged(object sender, EventArgs e)
@@ -129,5 +129,101 @@ namespace Winform_app
             }
         }
 
+        private void btnEliminarFisico_Click(object sender, EventArgs e)
+        {
+            PokemonNegocio negocio = new PokemonNegocio();
+            try
+            {
+                DialogResult respuesta = MessageBox.Show("¿Realmente quieres Eliminar permanentemente este Pokemon?","Eliminando", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (respuesta == DialogResult.Yes)
+                {
+                    Pokemon borrar = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
+                    negocio.Delete(borrar.Id);
+                    ListarPokemon();
+                    MessageBox.Show("Eliminado físico realizado");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnFiltro_Click(object sender, EventArgs e)
+        {
+            Filtrar();
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            Filtrar();
+        }
+
+        private void Filtrar()
+        {
+            if ( txtFiltro.Text == "" )
+            {
+                dgvGeneral.DataSource = listaPokemon;
+            }
+            else
+            {
+                List<Pokemon> listaFiltrada;
+                listaFiltrada = listaPokemon.FindAll(x => x.Nombre.ToUpper().Contains(txtFiltro.Text.ToUpper()));
+                dgvGeneral.DataSource = listaFiltrada;
+            }
+        }
+
+        private void FiltroDB()
+        {
+            cbxCampo.Items.Add("Numero");
+            cbxCampo.Items.Add("Nombre");
+            cbxCampo.Items.Add("Tipo");
+        }
+
+        private void cbxCampo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbxCampo.Text)
+            {
+                case "Numero":
+                    cbxCriterio.Items.Clear();
+                    cbxCriterio.Items.Add("Igual a");
+                    cbxCriterio.Items.Add("Mayor a");
+                    cbxCriterio.Items.Add("Menor a");
+                    break;
+                case "Nombre":
+                    cbxCriterio.Items.Clear();
+                    cbxCriterio.Items.Add("Inicie con");
+                    cbxCriterio.Items.Add("Termine con");
+                    cbxCriterio.Items.Add("Contenga");
+                    break;
+                case "Tipo":
+                    cbxCriterio.Items.Clear();
+                    cbxCriterio.Items.Add("Inicie con");
+                    cbxCriterio.Items.Add("Termine con");
+                    cbxCriterio.Items.Add("Contenga");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void btnFiltroDB_Click(object sender, EventArgs e)
+        {
+            PokemonNegocio negocio = new PokemonNegocio();
+            try
+            {
+                string campo = cbxCampo.Text.ToString();
+                string criterio = cbxCriterio.Text.ToString();
+                string filtro = txtFiltroDB.Text.ToString();
+
+                dgvGeneral.DataSource = negocio.Filtrar(campo, criterio, filtro);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
     }
 }

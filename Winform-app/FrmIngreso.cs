@@ -105,47 +105,8 @@ namespace Winform_app
         {
             try
             {
-                if (pokemon == null) //si pokemon es null es un Pokemon nuevo a cargar
-                {
-                    pokemon = new Pokemon();
-                    PokemonNegocio negocio = new PokemonNegocio();
-                    pokemon.Numero = int.Parse(txtNumero.Text);
-                    pokemon.Nombre = txtNombre.Text;
-                    pokemon.Descripcion = txtDescipcion.Text;
-                    pokemon.UrlImagen = txtUrlImagen.Text;
-                    pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
-                    pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
-                    negocio.Insert(pokemon, negocio.IdMax());
-                    MessageBox.Show("Pokemon agregado exitosamente");
-
-                }
-                else // no es null, existe pokemon cargado
-                {
-                    PokemonNegocio negocio = new PokemonNegocio();
-                    if (tipo == null) // si tipo es null quiere decir que estoy trabajando con un Pokemon
-
-                    {
-                        pokemon.Numero = int.Parse(txtNumero.Text);
-                        pokemon.Nombre = txtNombre.Text;
-                        pokemon.Descripcion = txtDescipcion.Text;
-                        pokemon.UrlImagen = txtUrlImagen.Text;
-                        negocio.UpdatePokemon(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen,pokemon.Id);
-                    }
-                    else // si no es null estoy trabajando con elementos guardados en un objeto pokemon
-                    {
-                        ElementoNegocio elemento = new ElementoNegocio();
-                        pokemon.Numero = int.Parse(txtNumero.Text);
-                        pokemon.Nombre = txtNombre.Text;
-                        pokemon.Descripcion = txtDescipcion.Text;
-                        pokemon.UrlImagen = txtUrlImagen.Text;
-                        pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
-                        pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
-                        negocio.UpdateElemento(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen, pokemon.Id, elemento.BuscarId(tipo.Tipo), elemento.BuscarId(pokemon.Tipo), elemento.BuscarId(tipo.Debilidad), elemento.BuscarId(pokemon.Debilidad));
-                        MessageBox.Show("Modificación exitosa");
-                    }
-                    
-                    Close();
-                }
+                CualCargar(pokemon);
+                Close();
             }
             catch (Exception )
             {
@@ -153,6 +114,57 @@ namespace Winform_app
             }
 
 
+        }
+
+        private void CualCargar(Pokemon pokemon)
+        {
+
+            if (pokemon == null) //si pokemon es null es un Pokemon nuevo a cargar
+            {
+                pokemon = new Pokemon();
+                PokemonNegocio negocio = new PokemonNegocio();
+                pokemon.Numero = int.Parse(txtNumero.Text);
+                pokemon.Nombre = txtNombre.Text;
+                pokemon.Descripcion = txtDescipcion.Text;
+                pokemon.UrlImagen = txtUrlImagen.Text;
+                pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
+                pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
+                negocio.Insert(pokemon, negocio.IdMax());
+                MessageBox.Show("Pokemon agregado exitosamente");
+
+            }
+            else // no es null, existe pokemon cargado
+            {
+                CualModificar(tipo);
+            }
+        }
+
+        private void CualModificar(Pokemon tipo)
+        {
+            PokemonNegocio negocio = new PokemonNegocio();
+            if (tipo == null) // si tipo es null quiere decir que estoy trabajando con un Pokemon
+
+            {
+                pokemon.Numero = int.Parse(txtNumero.Text);
+                pokemon.Nombre = txtNombre.Text;
+                pokemon.Descripcion = txtDescipcion.Text;
+                pokemon.UrlImagen = txtUrlImagen.Text;
+                negocio.UpdatePokemon(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen, pokemon.Id);
+                MessageBox.Show("Modificación de Pokemon exitosa");
+
+            }
+            else // si no es null estoy trabajando con elementos guardados en un objeto pokemon
+            {
+                ElementoNegocio elemento = new ElementoNegocio();
+                pokemon.Numero = int.Parse(txtNumero.Text);
+                pokemon.Nombre = txtNombre.Text;
+                pokemon.Descripcion = txtDescipcion.Text;
+                pokemon.UrlImagen = txtUrlImagen.Text;
+                pokemon.Tipo = (Elemento)cbxTipo.SelectedItem;
+                pokemon.Debilidad = (Elemento)cbxDebilidad.SelectedItem;
+                negocio.UpdateElemento(pokemon.Numero, pokemon.Nombre, pokemon.Descripcion, pokemon.UrlImagen, pokemon.Id, elemento.BuscarId(tipo.Tipo), elemento.BuscarId(pokemon.Tipo), elemento.BuscarId(tipo.Debilidad), elemento.BuscarId(pokemon.Debilidad));
+                MessageBox.Show("Modificación de Tipo o Debilidad exitosa");
+            }
         }
 
         private void txtUrlImagen_Leave(object sender, EventArgs e)
