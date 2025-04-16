@@ -51,6 +51,9 @@ namespace Winform_app
             this.btnFiltroDB = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblEtiquetaRuta = new System.Windows.Forms.Label();
+            this.lblRutaGuardado = new System.Windows.Forms.Label();
+            this.btnCambioRutaArchivos = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxPokemon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvElemento)).BeginInit();
@@ -277,11 +280,42 @@ namespace Winform_app
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Filtro contra DB";
             // 
+            // lblEtiquetaRuta
+            // 
+            this.lblEtiquetaRuta.AutoSize = true;
+            this.lblEtiquetaRuta.Location = new System.Drawing.Point(351, 382);
+            this.lblEtiquetaRuta.Name = "lblEtiquetaRuta";
+            this.lblEtiquetaRuta.Size = new System.Drawing.Size(84, 13);
+            this.lblEtiquetaRuta.TabIndex = 24;
+            this.lblEtiquetaRuta.Text = "Ruta guardado: ";
+            // 
+            // lblRutaGuardado
+            // 
+            this.lblRutaGuardado.AutoSize = true;
+            this.lblRutaGuardado.Location = new System.Drawing.Point(441, 382);
+            this.lblRutaGuardado.Name = "lblRutaGuardado";
+            this.lblRutaGuardado.Size = new System.Drawing.Size(16, 13);
+            this.lblRutaGuardado.TabIndex = 25;
+            this.lblRutaGuardado.Text = "...";
+            // 
+            // btnCambioRutaArchivos
+            // 
+            this.btnCambioRutaArchivos.Location = new System.Drawing.Point(354, 398);
+            this.btnCambioRutaArchivos.Name = "btnCambioRutaArchivos";
+            this.btnCambioRutaArchivos.Size = new System.Drawing.Size(56, 24);
+            this.btnCambioRutaArchivos.TabIndex = 26;
+            this.btnCambioRutaArchivos.Text = "Cambiar";
+            this.btnCambioRutaArchivos.UseVisualStyleBackColor = true;
+            this.btnCambioRutaArchivos.Click += new System.EventHandler(this.btnCambioRutaArchivos_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(783, 425);
+            this.Controls.Add(this.btnCambioRutaArchivos);
+            this.Controls.Add(this.lblRutaGuardado);
+            this.Controls.Add(this.lblEtiquetaRuta);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnEliminarLogico);
@@ -304,6 +338,7 @@ namespace Winform_app
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -331,6 +366,9 @@ namespace Winform_app
         private System.Windows.Forms.Button btnFiltroDB;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label lblEtiquetaRuta;
+        private System.Windows.Forms.Label lblRutaGuardado;
+        private System.Windows.Forms.Button btnCambioRutaArchivos;
     }
 }
 

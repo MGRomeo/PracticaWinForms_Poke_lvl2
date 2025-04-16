@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration; // agregar references
+using System.IO; // para file y directory
 using Dominio;
 using Negocio;
 
@@ -190,5 +192,37 @@ namespace Winform_app
         }
 
         #endregion
+
+
+        // -------> Manejo de archivos!!!!!
+
+        private void btnAgregarImagen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            try
+            {
+                openFileDialog.Filter = "Todos los archivos|*.*| JPG|*.jpg| PNG|*.png";
+                string rutaCarpeta = Properties.Settings.Default.RutaArchivos;
+                openFileDialog.InitialDirectory = rutaCarpeta;
+
+                // si no existe el directorio
+                if (!Directory.Exists(rutaCarpeta))
+                {
+                    Directory.CreateDirectory(rutaCarpeta);
+                }
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    txtUrlImagen.Text = openFileDialog.FileName;
+                    CargarImagen(txtUrlImagen.Text);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Winform_app
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            lblRutaGuardado.Text = CrearObtenerRutaInicial();
             ListarPokemon();
             FiltroDB();
         }
@@ -104,6 +106,7 @@ namespace Winform_app
                 Pokemon pokemon = (Pokemon)dgvGeneral.CurrentRow.DataBoundItem;
                 FrmIngreso frmIngreso = new FrmIngreso(pokemon);
                 frmIngreso.ShowDialog();
+                ListarPokemon();
             }
             
         }
@@ -213,17 +216,101 @@ namespace Winform_app
             PokemonNegocio negocio = new PokemonNegocio();
             try
             {
-                string campo = cbxCampo.Text.ToString();
-                string criterio = cbxCriterio.Text.ToString();
-                string filtro = txtFiltroDB.Text.ToString();
+                if (cbxCampo.Text != "")
+                {
+                    string campo = cbxCampo.Text.ToString();
+                    string criterio = cbxCriterio.Text.ToString();
+                    string filtro = txtFiltroDB.Text.ToString();
 
-                dgvGeneral.DataSource = negocio.Filtrar(campo, criterio, filtro);
+                    dgvGeneral.DataSource = negocio.Filtrar(campo, criterio, filtro);
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
 
+        }
+
+
+
+        // -------> Manejo Archivos
+
+        // Creacion u Obtencion de la ruta donde se guardan los archivos
+        private string CrearObtenerRutaInicial()
+        {
+            string rutaGuardada = Properties.Settings.Default.RutaArchivos;
+
+            if (string.IsNullOrEmpty(rutaGuardada) || !Directory.Exists(rutaGuardada))
+            {
+                rutaGuardada = CambiarRutaArchivos();
+            }
+
+            return rutaGuardada;
+        }
+
+        // Cambio direccion de carpetas
+        private string CambiarRutaArchivos()
+        {
+            string rutavieja = Properties.Settings.Default.RutaArchivos;
+            string rutanueva = "";
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+
+                    rutanueva = dialog.SelectedPath;
+                    MoverArchivos(rutavieja,rutanueva);
+                    Properties.Settings.Default.RutaArchivos = rutanueva;
+                    Properties.Settings.Default.Save();
+                }
+            return rutanueva;
+        }
+
+        private void btnCambioRutaArchivos_Click(object sender, EventArgs e)
+        {
+            CambiarRutaArchivos();
+        }
+
+        private void MoverArchivos(string rutaAnterior, string rutaNueva)
+        {
+            DialogResult pregunta = MessageBox.Show("Desea mover los archivos a la nueva ubicacion?", "Informacion", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (pregunta == DialogResult.Yes)
+            {
+                try
+                {
+                    if (!Directory.Exists(rutaNueva))
+                    {
+                        Directory.CreateDirectory(rutaNueva);
+                    }
+
+                    // guardo toda la ruta del los archivos
+                    string[] archivos = Directory.GetFiles(rutaAnterior);
+                    int contador = 0;
+                    foreach (string archivo in archivos)
+                    {
+                        // obtengo el nobre del archivo desde la ruta
+                        string nombreArchivo = Path.GetFileName(archivo);
+                        // Creo el nuevo archivo con la ruta nueva y su nombre
+                        string destino = Path.Combine(rutaNueva,nombreArchivo);
+
+                        if (!File.Exists(destino))
+                        {
+                            File.Move(archivo, destino);
+                            contador += 1;
+                        }
+                    }
+
+                    MessageBox.Show("Se movieron " + contador +" archivos correctamente");
+                    lblRutaGuardado.Text = CrearObtenerRutaInicial();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                } 
+
+            }
         }
     }
 }
